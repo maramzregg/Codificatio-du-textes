@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>برنامج تشفير وفك التشفير</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #fff4f8;
+            color: #8a4d99;
+            text-align: center;
+            padding: 50px;
+            background-image: url('https://via.placeholder.com/300x200.png?text=Butterflies'), 
+            background-repeat: no-repeat;
+            background-position: top left, top right;
+        }
+        h1 {
+            color: #d295cb;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .container {
+            margin: 0 auto;
+            width: 50%;
+            padding: 20px;
+            border: 3px solid #d295cb;
+            border-radius: 15px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+            border: 2px solid #d295cb;
+            font-size: 18px;
+        }
+        input {
+            width: 80%;
+        }
+        button {
+            background-color: #d295cb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover {
+            background-color: #b88fa9;
+        }
+        .output {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #d295cb;
+        }
+        .decorations {
+            margin-top: 20px;
+        }
+        .decorations img {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌸 برنامج تشفير وفك التشفير 🌸</h1>
+    <div class="container">
+        <label for="textInput">أدخل النص (حروف فقط):</label><br>
+        <input type="text" id="textInput" placeholder="أدخل النص هنا"><br>
+
+        <button onclick="encrypt()">تشفير النص</button>
+        <button onclick="decrypt()">فك التشفير</button>
+
+        <div class="output">
+            <p id="outputText"></p>
+        </div>
+    </div>
+
+    <div class="decorations">
+        <img src="https://via.placeholder.com/50.png?text=🦋" alt="Butterfly">
+        <img src="https://via.placeholder.com/50.png?text=🍰" alt="Cake">
+        <img src="https://via.placeholder.com/50.png?text=🍭" alt="Candy">
+    </div>
+
+    <script>
+        const cipherMap = {
+            'ا': 28, 'أ': 28, 'إ': 28, 'آ': 28,  // كافة أشكال الألف
+            'ب': 27, 'ت': 2, 'ث': 1, 'ج': 26, 'ح': 25, 'خ': 24, 'د': 23, 'ذ': 22, 'ر': 21, 'ز': 20,
+            'س': 19, 'ش': 18, 'ص': 17, 'ض': 16, 'ط': 15, 'ظ': 14, 'ع': 13, 'غ': 12, 'ف': 11, 
+            'ق': 10, 'ك': 9, 'ل': 8, 'م': 7, 'ن': 6, 'ه': 5, 'و': 4, 'ي': 3, 'ة': 30
+        };
+
+        // دالة لتشفير النص مع استبدال الفراغات بـ "مطة"
+        function encrypt() {
+            const input = document.getElementById('textInput').value.trim();
+            let encryptedText = '';
+
+            for (let i = 0; i < input.length; i++) {
+                if (input[i] === ' ') {
+                    encryptedText += 'ـ '; // استبدال الفراغ بـ "مطة"
+                } else if (cipherMap[input[i]]) {
+                    encryptedText += cipherMap[input[i]] + ' '; // إضافة الرقم المقابل لكل حرف
+                } else {
+                    encryptedText += input[i] + ' '; // إضافة الحرف كما هو إذا لم يكن في القاموس
+                }
+            }
+
+            document.getElementById('outputText').textContent = 'النص المشفر: ' + encryptedText.trim();
+        }
+
+        // دالة لفك التشفير مع استبدال "مطة" بـ فراغ
+        function decrypt() {
+            const input = document.getElementById('textInput').value.trim().split(' ');
+            let decryptedText = '';
+
+            input.forEach((item, index) => {
+                if (item === 'ـ') {
+                    decryptedText += ' '; // استبدال "مطة" بـ فراغ
+                } else {
+                    const letter = Object.keys(cipherMap).find(key => cipherMap[key] == item);
+                    if (letter) {
+                        decryptedText += letter;
+                    }
+                }
+            });
+
+            document.getElementById('outputText').textContent = 'النص المفكوك: ' + decryptedText;
+        }
+    </script>
+
+</body>
+</html>
